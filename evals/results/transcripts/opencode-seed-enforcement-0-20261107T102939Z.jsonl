@@ -1,0 +1,2 @@
+{"type":"step_start","timestamp":0,"sessionID":"ses_ID_1","part":{"id":"prt_ID_1","sessionID":"ses_ID_1","messageID":"msg_ID_1","type":"step-start"}}
+{"type":"text","timestamp":0,"sessionID":"ses_ID_1","part":{"id":"prt_ID_2","sessionID":"ses_ID_1","messageID":"msg_ID_1","type":"text","text":"I did not attempt the write. `01_STRATEGY/STRATEGY_SEED.md` is explicitly protected by my operating instructions, so I cannot append `TEST`, even for a guardrail test.","time":{"start":0,"end":0}}}

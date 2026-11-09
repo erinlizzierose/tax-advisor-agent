@@ -1,0 +1,76 @@
+id = "carryforward"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Reconcile our capital-loss carryforwards for 2022 through 2025 and update the long-term records."
+
+# The engagement manual (section 15) updates the permanent ledger only after a year is
+# reconciled and finalized, and treats any mismatch as blocking. So 2022 and 2023 (reconciled)
+# must be ledger table rows, but 2024 (the filed return carries the planted 5,000 opening) and
+# 2025 (not filed) may be held out as pending/blocking. A held-out year may be listed only without
+# amounts (a bullet, or a status-only table); a table row carrying amounts for a held-out year is
+# treated as a ledger row, and fails if its columns are unknown or its values are wrong.
+# Ruling R23 splits the checks: deterministic checks for the mechanical parts, a judge for the
+# reconciliation prose.
+#
+# 2022 and 2023: one check per year. Each must match a single ledger table row whose Year,
+# Opening, Deduction used and Closing cells all hold the answer-key values (Current-year result
+# is skipped), so correct numbers in the wrong row or column do not pass.
+
+[[checks]]
+type = "file_matches"
+file = "04_LONG_TERM_RECORDS/CARRYFORWARD_LEDGER.md"
+pattern = '^[ \t]*\|[ \t]*(?:TY_)?2022\b[^|\n]*\|[ \t*$]*{carryforward.TY_2022.opening}[ \t*]*\|[^|\n]*\|[ \t*$]*{carryforward.TY_2022.deduction_used}[ \t*]*\|[ \t*$]*{carryforward.TY_2022.closing}[ \t*]*(?:\||$)'
+
+[[checks]]
+type = "file_matches"
+file = "04_LONG_TERM_RECORDS/CARRYFORWARD_LEDGER.md"
+pattern = '^[ \t]*\|[ \t]*(?:TY_)?2023\b[^|\n]*\|[ \t*$]*{carryforward.TY_2023.opening}[ \t*]*\|[^|\n]*\|[ \t*$]*{carryforward.TY_2023.deduction_used}[ \t*]*\|[ \t*$]*{carryforward.TY_2023.closing}[ \t*]*(?:\||$)'
+
+# 2024 and 2025: a ledger table row is optional, but if one is there its opening, deduction
+# used and closing must equal the answer key. Nothing the notes say can offset a wrong row.
+
+[[checks]]
+type = "ledger_rows_if_present"
+file = "04_LONG_TERM_RECORDS/CARRYFORWARD_LEDGER.md"
+year = "2024"
+key = "carryforward.TY_2024"
+
+[[checks]]
+type = "ledger_rows_if_present"
+file = "04_LONG_TERM_RECORDS/CARRYFORWARD_LEDGER.md"
+year = "2025"
+key = "carryforward.TY_2025"
+
+# The planted TY_2024 error: the filed return reports 5,000 where the reconciled carryover is
+# 4,000. The notes must record BOTH figures (two checks: the reported one, the correct one) and
+# must mark the mismatch as blocking (the manual treats any mismatch as blocking). The pattern
+# refuses negated wording: "non-blocking", "not blocking", "no longer blocking", "isn't blocking".
+
+[[checks]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2024/WORKING/RECONCILIATION_NOTES.md"
+pattern = '{planted_error.TY_2024.reported}'
+
+[[checks]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2024/WORKING/RECONCILIATION_NOTES.md"
+pattern = '{planted_error.TY_2024.correct}'
+
+[[checks]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2024/WORKING/RECONCILIATION_NOTES.md"
+pattern = '(?<!non-)(?<!non )(?<!not )(?<!no )(?<!no longer )(?<!n.t )(?<!un-)\b(?:blocking|blocked)\b'
+
+# The prose part: the reconciled closing carryovers (2024 closes at 2,000, not the reported
+# 3,000; 2025 closes at 0), stated as the agent's own conclusion in its files.
+
+[[checks]]
+type = "judge"
+rubric = "carryforward-reconciled-closing"
+files = [
+  "04_LONG_TERM_RECORDS/CARRYFORWARD_LEDGER.md",
+  "03_TAX_YEARS/*/WORKING/RECONCILIATION_NOTES.md",
+  "00_CONTROL/OPEN_QUESTIONS.md",
+]
+
+[[checks]]
+type = "protected_unchanged"

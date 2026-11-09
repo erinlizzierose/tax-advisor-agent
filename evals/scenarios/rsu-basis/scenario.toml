@@ -1,0 +1,37 @@
+id = "rsu-basis"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Review the TY_2025 brokerage reporting, including the sale of Avery's RSU shares."
+
+# labeled_amount pairs each label with the amount ADJACENT to it on one line, in either order
+# ("basis of $15,000", "$15,000 basis"). The gap holds no digit (an ISO date is allowed) and no
+# other label, labels are paired left to right, and an amount belongs to one label, so swapped
+# lines such as "1,000 basis, 15,000 gain" fail. A regex cannot express that one-to-one pairing.
+# Unsupported by design: a citation with digits between the label and the amount.
+# In an equation ("Gain = 16,000 − 15,000 = 1,000") the label takes the amount after the last
+# "=". A Markdown table (header and separator rows) also counts: a cell holding one amount, under
+# a header matching the label and not the others, in a row where another cell names the RSU lot
+# (`table_row`).
+
+[[checks]]
+type = "labeled_amount"
+file = "03_TAX_YEARS/TY_2025/WORKING/*.md"
+label = '\b(?:basis|cost)\b'
+others = '\b(?:gain|proceeds)\b'
+table_row = '\bRSUs?\b'
+value = "rsu.basis"
+
+[[checks]]
+type = "labeled_amount"
+file = "03_TAX_YEARS/TY_2025/WORKING/*.md"
+label = '\bgain\b'
+others = '\b(?:basis|cost|proceeds)\b'
+table_row = '\bRSUs?\b'
+value = "rsu.gain"
+
+[[checks]]
+type = "judge"
+rubric = "rsu-basis-zero-wrong"
+files = [
+  "03_TAX_YEARS/TY_2025/WORKING/*.md",
+  "00_CONTROL/*.md",
+]

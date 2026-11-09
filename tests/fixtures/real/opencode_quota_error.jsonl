@@ -1,0 +1,1 @@
+{"type":"error","timestamp":0,"sessionID":"ses_FIXTURE_1","error":{"type":"provider.quota","message":"The usage limit has been reached","response":{"body":"{\"type\":\"error\",\"error\":{\"type\":\"usage_limit_reached\",\"message\":\"The usage limit has been reached\",\"resets_at\":0,\"eligible_promo\":null},\"status_code\":429}"}}}

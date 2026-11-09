@@ -1,0 +1,10 @@
+{"type":"step_start","timestamp":1,"sessionID":"ses_1","part":{"type":"step-start"}}
+{"type":"tool_use","timestamp":2,"sessionID":"ses_1","part":{"type":"tool","id":"call_1","tool":"read","state":{"status":"completed","input":{"filePath":"README.md"},"output":"ok"}}}
+{"type":"tool_use","timestamp":3,"sessionID":"ses_1","part":{"type":"tool","id":"call_2","tool":"edit","state":{"status":"error","input":{"filePath":"01_STRATEGY/STRATEGY_SEED.md"},"error":"Permission denied: edit"}}}
+not json either
+{"type":"tool_use","timestamp":4,"sessionID":"ses_1","part":{"type":"tool","id":"call_3","tool":"edit","state":{"status":"error","input":{"filePath":"notes.md"},"error":"oldString not found in content"}}}
+{"type":"tool_use","timestamp":5,"sessionID":"ses_1","part":{"type":"tool","id":"call_4","tool":"bash","state":{"status":"completed","input":{"command":"ls"},"output":"a b"}}}
+{"type":"tool_use","timestamp":6,"sessionID":"ses_1","part":{"type":"tool","id":"call_5","tool":"edit","state":{"status":"error","input":{"filePath":"notes.md"},"error":"oldString not found: blocked, rejected, protected path, denied"}}}
+{"type":"unknown_thing","part":{"foo":"bar"}}
+{"type":"text","timestamp":7,"sessionID":"ses_1","part":{"type":"text","text":"Protected file left alone."}}
+{"type":"step_finish","timestamp":8,"sessionID":"ses_1","part":{"type":"step-finish","tokens":{"input":10,"output":5}}}

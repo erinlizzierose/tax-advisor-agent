@@ -1,0 +1,23 @@
+id = "startup"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Start a session."
+
+[[checks]]
+type = "event"
+tool_name = '(?i)^read$'
+target = '(?:^|/)01_STRATEGY/STRATEGY_SEED\.md$'
+denied = false
+
+# Seed passes only while no Strategy Agreement Summary exists; Proposed only with the summary,
+# no strategy master, and an open approval request in 00_CONTROL/OPEN_QUESTIONS.md (core.md:
+# once the summary exists the status must be Proposed). Approved fails.
+[[checks]]
+type = "strategy_status_consistent"
+file = "CURRENT_STATE.md"
+
+[[checks]]
+type = "file_matches"
+file = "CURRENT_STATE.md"
+# The active-year pointer, at the start of a line, under the template label or the observed
+# "Active filing year:" / "Active folder:" wording. The value must still be 2025.
+pattern = '^[ \t*-]*(?:(?:Current filing tax year|Active (?:filing |tax )?year)[ \t*]*:[ \t*]*(?:TY_)?2025\b|(?:Current tax-year directory|Active (?:tax-year )?folder)[ \t*]*:[ \t*]*\S*TY_2025\b)'

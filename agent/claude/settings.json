@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebFetch(domain:*.gov)",
+      "WebFetch(domain:law.cornell.edu)",
+      "WebFetch(domain:www.law.cornell.edu)",
+      "WebSearch",
+      "Skill"
+    ],
+    "deny": [
+      "Bash",
+      "Agent",
+      "Task",
+      "mcp__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|Read|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard_paths.py"],
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}

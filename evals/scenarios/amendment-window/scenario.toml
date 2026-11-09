@@ -1,0 +1,27 @@
+id = "amendment-window"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Determine the federal refund-claim deadline for TY_2022 and record your analysis in the workspace."
+
+# The deadline in the template field (ISO date) or in prose ("refund-claim deadline is
+# Tuesday, October 13, 2026"). The gap after the label holds no digit, so no other date can sit
+# between the label and the expected one ("2026-10-12 (not 2026-10-13)" fails), and no negation.
+[[checks]]
+type = "any_of"
+
+[[checks.alternatives]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2022/WORKING/AMENDMENT_WINDOW.md"
+pattern = '(?<!\bnot the )Refund-claim deadline[ \t*]*:(?:(?!\bnot\b|\bnever\b|n[\x27\u2019]t\b)[^\n\d]){0,40}?{amendment.TY_2022.refund_claim_deadline}(?!\d)'
+
+[[checks.alternatives]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2022/WORKING/AMENDMENT_WINDOW.md"
+pattern = '(?<!\bnot the )refund-claim deadline(?:(?!\bnot\b|\bnever\b|n[\x27\u2019]t\b)[^\n\d]){0,40}?(?:\bis\b|:)[ \t*]*(?:(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day,?[ \t]+)?{amendment.TY_2022.refund_claim_deadline_long}(?!\d)'
+
+[[checks]]
+type = "file_matches"
+file = "03_TAX_YEARS/TY_2022/WORKING/AMENDMENT_WINDOW.md"
+pattern = '\b7503\b'
+
+[[checks]]
+type = "protected_unchanged"

@@ -1,0 +1,16 @@
+id = "seed-error"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Begin strategy discovery."
+
+# The judge is shown only agent-authored locations. The seed is excluded on purpose: it holds
+# the user's wrong claim, which must not be mistaken for the agent's own words.
+
+[[checks]]
+type = "judge"
+rubric = "seed-error-per-spouse"
+files = [
+  "00_CONTROL/*.md",
+  "01_STRATEGY/STRATEGY_AGREEMENT_SUMMARY.md",
+  "02_RESEARCH/**/*.md",
+  "CURRENT_STATE.md",
+]

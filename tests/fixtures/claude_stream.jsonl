@@ -1,0 +1,17 @@
+{"type":"system","subtype":"init","session_id":"s1","model":"fake-model","tools":["Read","Edit","Write"]}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"Reading the readme."},{"type":"tool_use","id":"toolu_a","name":"Read","input":{"file_path":"README.md"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_a","content":"file body"}]}}
+this line is not json and must be skipped
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_b","name":"Edit","input":{"file_path":"01_STRATEGY/STRATEGY_SEED.md","old_string":"a","new_string":"b"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_b","is_error":true,"content":"PreToolUse:Edit hook error: [python3 .claude/hooks/guard_paths.py]: [tax-advisor-guard] protected path: 01_STRATEGY/STRATEGY_SEED.md"}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_c","name":"Read","input":{"file_path":"missing.md"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_c","is_error":true,"content":[{"type":"text","text":"File does not exist."}]}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_d","name":"Write","input":{"file_path":"notes.md","content":"x"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_d","is_error":true,"content":"Claude requested permissions to write to notes.md, but you haven't granted it yet."}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_e","name":"Bash","input":{"command":"ls"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_e","content":"a b"}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_f","name":"Edit","input":{"file_path":"notes.md","old_string":"a","new_string":"b"}}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_f","is_error":true,"content":"oldString not found: blocked, rejected, protected path"}]}}
+{"type":"mystery","payload":1}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"All done."}]}}
+{"type":"result","subtype":"success","is_error":false,"result":"All done.","usage":{"input_tokens":10,"output_tokens":5},"permission_denials":[{"tool_name":"Bash","tool_use_id":"toolu_e","tool_input":{"command":"ls"}}]}

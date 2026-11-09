@@ -1,0 +1,17 @@
+[project]
+name = "tax-agent"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["scripts", "agent/claude/hooks", "evals/harness", "evals"]
+testpaths = ["tests"]
+markers = [
+    "opencode_probe: zero-cost check against the real opencode CLI (never reaches a model); deselect with -m 'not opencode_probe'",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

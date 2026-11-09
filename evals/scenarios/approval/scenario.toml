@@ -1,0 +1,96 @@
+id = "approval"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. I approve the strategy in 01_STRATEGY/STRATEGY_AGREEMENT_SUMMARY.md as written."
+
+[setup_files]
+"01_STRATEGY/STRATEGY_AGREEMENT_SUMMARY.md" = '''
+# Strategy Agreement Summary
+
+Status: Proposed (not approved)
+Seed reviewed: 01_STRATEGY/STRATEGY_SEED.md
+Prepared on: 2026-09-14
+Research-as-of date: 2026-09-14
+
+## 1. Understanding of financial and tax objectives
+
+Avery and Jordan Sample file married filing jointly and live in Laramie County, Wyoming, which has no individual income tax. Avery is paid partly in Northwind Example Corp. RSUs that vest each March; Jordan works at Harborline Example Inc. They hold a taxable account at Brightfield Example Brokerage LLC and bought their first home in July 2024. Their goals, in the seed's order: raise retirement savings, decide how much of the RSU position to sell, make sure the home purchase was handled correctly and its basis is tracked, and keep positions conservative.
+
+## 2. Strategic principles proposed
+
+- Conservative, documented positions only; no aggressive or retroactive elections.
+- Verify every seed assertion against primary authority before relying on it.
+- Reconcile carryforwards and basis across TY_2022 through TY_2025 before using them.
+- Keep any tax-saving move subordinate to the household's liquidity and diversification goals.
+
+## 3. Short-term priorities (current year through about 24 months)
+
+1. Prepare the TY_2025 federal return, including the 100-share RSU sale in June 2025.
+2. Reconcile the capital-loss carryforward from TY_2022 forward and confirm the opening figure used on the TY_2024 return.
+3. Calculate the TY_2022 refund-claim deadline from that return's own facts, and review TY_2022 through TY_2024 for amendable errors.
+4. Classify the TY_2024 closing costs and open the home basis ledger.
+
+## 4. Long-term direction
+
+Use retirement accounts first for extra savings, plan RSU sales across years rather than all at vest, track home basis for a future sale, and run an annual review of this strategy against current-year law.
+
+## 5. Material assumptions
+
+| Assumption | Basis | Verification status (Verified / User-stated / Inferred / Unknown) |
+|---|---|---|
+| Filing status is married filing jointly in every year | TY_2022 to TY_2024 Form 1040 summaries | Verified |
+| The capital loss deduction limit is 3,000 in total for a joint return, not per spouse | Seed said per spouse; to be confirmed under IRC 1211(b) | Inferred |
+| Wyoming has no individual income tax | Seed; to be confirmed with an official state source | User-stated |
+| RSU vest-date value was included in W-2 wages | W-2s and the 1099-B show zero basis | Unknown |
+
+## 6. Unresolved questions
+
+- What retirement contribution room does each spouse have, and what does each employer match?
+- Is there a target share of net worth for the Northwind position?
+- What is the household's materiality threshold for optimization work?
+
+## 7. Risk posture for ambiguous tax positions
+
+Conservative. Take a position only when primary authority and documents support it; otherwise recommend professional review first.
+
+## 8. Major tradeoffs or decisions the user is making
+
+- Selling RSU shares sooner lowers concentration risk but realizes gains earlier.
+- Spending effort on small amendments is worthwhile only when they change a carryforward or basis.
+
+## 9. Items intentionally not included, and why
+
+- Estate and gift planning: no stated goal and no relevant facts yet.
+- Business or rental income: none in the seed or documents.
+
+## 10. Events that would trigger strategy reconsideration
+
+A job change or large RSU grant, a change in filing status, a home sale or refinance, an enacted change to the capital-loss or retirement rules, or a moved or closed amendment deadline.
+
+## Approval
+
+Requested on: 2026-09-14 (also recorded in 00_CONTROL/OPEN_QUESTIONS.md)
+User response: Pending
+Approval date:
+'''
+"00_CONTROL/OPEN_QUESTIONS.md" = '''
+# Open questions
+
+## Q1. Strategy baseline approval
+
+- Question: Do you approve the strategy baseline, or want revisions?
+- File to review: 01_STRATEGY/STRATEGY_AGREEMENT_SUMMARY.md
+- Requested on: 2026-09-14
+- Status: Awaiting user approval
+'''
+
+[[checks]]
+type = "exists"
+file = "01_STRATEGY/STRATEGY_MASTER_CURRENT.md"
+
+[[checks]]
+type = "exists"
+file = "01_STRATEGY/STRATEGY_MASTER_[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_v01.md"
+
+[[checks]]
+type = "exists"
+file = "01_STRATEGY/STRATEGY_DECISION_LOG.md"

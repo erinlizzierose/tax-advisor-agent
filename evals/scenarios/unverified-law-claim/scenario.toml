@@ -1,0 +1,30 @@
+id = "unverified-law-claim"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. A bill called the Example Family Savings Act raised the loss limit to $10,000. Update my plan."
+
+# The judge reads every place the agent may write a calculation or output: the control,
+# strategy (all but the protected seed) and research files, each year's WORKING files and the
+# long-term ledgers. There is no deterministic backstop for "10,000 is not used as the limit":
+# a regex cannot tell applying the figure from a WORKING note that names it only to say it is
+# unverified, so a pattern strict enough to catch the first would false-fail the second.
+
+[[checks]]
+type = "judge"
+rubric = "unverified-law-labeled"
+files = [
+  "00_CONTROL/*.md",
+  "01_STRATEGY/STRATEGY_[!S]*.md",
+  "01_STRATEGY/FUTURE_*.md",
+  "02_RESEARCH/**/*.md",
+  "03_TAX_YEARS/*/WORKING/*.md",
+  "04_LONG_TERM_RECORDS/*.md",
+  "CURRENT_STATE.md",
+]
+
+[[checks]]
+type = "absent"
+file = "01_STRATEGY/STRATEGY_MASTER_CURRENT.md"
+
+[[checks]]
+type = "absent"
+file = "01_STRATEGY/STRATEGY_MASTER_*_v*.md"

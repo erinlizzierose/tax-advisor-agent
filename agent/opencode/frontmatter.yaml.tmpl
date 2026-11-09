@@ -1,0 +1,204 @@
+# OpenCode agent frontmatter (V2 fields). The installer wraps this in frontmatter fences and appends core.md.
+#
+# Rules are ordered and the last match wins. `*` matches any characters including `/`; `?`
+# matches exactly one character. Start from deny-all, then allow only what the agent needs.
+# Nothing here allows shell, subagent, external_directory, execute, or MCP tools.
+#
+# Edits are an allow-list (ruling R27). OpenCode matches `edit` resources as workspace-relative
+# paths (verified on 2.1.4), case-sensitively outside Windows, so the allows are exact-case and
+# a differently cased path falls through to deny-all. Three denies follow the allows: a WORKING
+# folder two segments below 03_TAX_YEARS (`?` also matches `/`, so `TY_????` alone would take
+# `TY_a/bc/WORKING/x`; this deny cannot match the real `TY_2024/WORKING/x`), nested WORKING
+# folders, and a case-blind deny shaped like STRATEGY_SEED.md (8 chars, `_`, 4, `.`, 2),
+# because on a case-insensitive disk `01_STRATEGY/strategy_seed.md` is the seed and would
+# otherwise match the `01_STRATEGY/*` allow. `TY_????` cannot say "digits": it approximates.
+#
+# Web search is denied on purpose (the explicit `websearch` deny below stays visible after the
+# deny-all). OpenCode's first search asks the user to pick a search provider; a non-interactive
+# `opencode run` cannot answer that question, so it is cancelled and the run exits 1. Denying it
+# also keeps queries away from any third-party search service. The agent researches by fetching
+# the official hosts below directly, including their site-search pages. (`websearch: false` is
+# top-level config only and the installer writes no project opencode.json, hence a permission.)
+#
+# Web fetch is limited to exact https authority hosts, each listed twice: `https://<host>/*` for
+# any path and the bare `https://<host>` (the bare URL does not match the `/*` form). A wildcard
+# host (`https://*.irs.gov/*`) would be unsafe because `*` also matches `/`, so it would admit
+# `https://evil/x.irs.gov/`. `http://` stays denied. State tax sites are not listed; add both
+# `https://<host>/*` and `https://<host>` allows for the states you need.
+description: Tax advisor for a local multi-year U.S. tax workspace. Reads the workspace, researches current law by fetching official sources, and writes analysis outside protected evidence paths.
+mode: primary
+permissions:
+  - action: "*"
+    resource: "*"
+    effect: deny
+  - action: read
+    resource: "*"
+    effect: allow
+  - action: glob
+    resource: "*"
+    effect: allow
+  - action: grep
+    resource: "*"
+    effect: allow
+  - action: websearch
+    resource: "*"
+    effect: deny
+  - action: skill
+    resource: "*"
+    effect: allow
+  - action: question
+    resource: "*"
+    effect: allow
+  - action: webfetch
+    resource: "https://irs.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://irs.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.irs.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.irs.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://apps.irs.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://apps.irs.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://law.cornell.edu/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://law.cornell.edu"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.law.cornell.edu/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.law.cornell.edu"
+    effect: allow
+  - action: webfetch
+    resource: "https://uscode.house.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://uscode.house.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://ecfr.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://ecfr.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.ecfr.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.ecfr.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://federalregister.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://federalregister.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.federalregister.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.federalregister.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://govinfo.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://govinfo.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.govinfo.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.govinfo.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://congress.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://congress.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.congress.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.congress.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://ustaxcourt.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://ustaxcourt.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.ustaxcourt.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.ustaxcourt.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://supremecourt.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://supremecourt.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.supremecourt.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.supremecourt.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://treasury.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://treasury.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.treasury.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://www.treasury.gov"
+    effect: allow
+  - action: webfetch
+    resource: "https://home.treasury.gov/*"
+    effect: allow
+  - action: webfetch
+    resource: "https://home.treasury.gov"
+    effect: allow
+  - action: edit
+    resource: "CURRENT_STATE.md"
+    effect: allow
+  - action: edit
+    resource: "00_CONTROL/*"
+    effect: allow
+  - action: edit
+    resource: "01_STRATEGY/*"
+    effect: allow
+  - action: edit
+    resource: "02_RESEARCH/*"
+    effect: allow
+  - action: edit
+    resource: "04_LONG_TERM_RECORDS/*"
+    effect: allow
+  - action: edit
+    resource: "03_TAX_YEARS/TY_????/WORKING/?*"
+    effect: allow
+  - action: edit
+    resource: "03_TAX_YEARS/*/*/WORKING/*"
+    effect: deny
+  - action: edit
+    resource: "03_TAX_YEARS/TY_????/*/WORKING/*"
+    effect: deny
+  - action: edit
+    resource: "01_STRATEGY/????????_????.??"
+    effect: deny

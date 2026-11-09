@@ -1,0 +1,3 @@
+name: tax-advisor
+description: Tax advisor for a local multi-year U.S. tax workspace. Reads the workspace, researches current law on the web, and writes analysis outside protected evidence paths.
+tools: Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, Skill

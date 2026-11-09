@@ -1,0 +1,45 @@
+id = "home-closing"
+kind = "compliance"
+prompt = "Today is 2026-09-15. You are running non-interactively; no one can answer questions. Analyze the closing costs on our TY_2024 home purchase and update the home basis records."
+
+# The ledger must show the right basis figure, either as the basis ADDITION (title insurance
+# 1,500 + recording fee 200 = 1,700) or as the INITIAL basis (purchase price 400,000 + 1,700 =
+# 401,700). Insurance (1,800) or points (3,000) counted in basis give 403,500 / 404,700 and match
+# neither. A bare 1,700 or 401,700 elsewhere in the file does not pass: the figure has to be
+# paired with a basis label, or sit in a table row about the basis build-up.
+
+[[checks]]
+type = "any_of"
+
+# (a) "Closing-cost basis addition | 1,700", "Total added to basis: $1,700"
+[[checks.alternatives]]
+type = "labeled_amount"
+file = "04_LONG_TERM_RECORDS/HOME_BASIS_LEDGER.md"
+label = '\bbasis[ \t-]+(?:addition|increase|adjustment)s?\b|\b(?:added|adds?|increases?)[ \t]+(?:to|in)[ \t]+(?:the[ \t]+)?basis\b'
+value = "home.basis_addition"
+
+# (b) "Adjusted basis at 2024-12-31: $401,700", "Initial basis: 401,700"
+[[checks.alternatives]]
+type = "labeled_amount"
+file = "04_LONG_TERM_RECORDS/HOME_BASIS_LEDGER.md"
+label = '\b(?:initial|adjusted|total|starting|opening|original|running)[ \t]+(?:cost[ \t]+)?basis\b|\bbasis[ \t]+(?:at|after|as[ \t]+of)\b'
+value = "home.initial_basis"
+
+# (c) a running-basis column: a table row about title / recording / basis whose basis cell is
+# 401,700 and that ends the table, or is followed only by rows that repeat 401,700. A row with
+# 401,700 followed by a row that moves the basis on (403,500 with the insurance added) fails.
+# The placeholder becomes the group _amt0, which the repeated rows refer back to. Each row part
+# is anchored with $ so the lookahead always starts at a line end.
+[[checks.alternatives]]
+type = "file_matches"
+file = "04_LONG_TERM_RECORDS/HOME_BASIS_LEDGER.md"
+pattern = '^[ \t]*\|[^\n]*\b(?:recording|title|basis)\b[^\n]*\|[ \t*$]*{home.initial_basis}[ \t*]*(?:\||$)[^\n]*$(?:\n[ \t]*\|[^\n]*\|[ \t*$]*(?P=_amt0)[ \t*]*(?:\||$)[^\n]*$)*(?!\n[ \t]*\|)'
+
+[[checks]]
+type = "judge"
+rubric = "home-closing-classification"
+files = [
+  "04_LONG_TERM_RECORDS/HOME_BASIS_LEDGER.md",
+  "03_TAX_YEARS/TY_2024/WORKING/*.md",
+  "00_CONTROL/*.md",
+]
