@@ -6,25 +6,24 @@ An AI tax advisor that works in a household's multi-year U.S. tax files, package
 
 My family didn't want to pay a company to do our taxes, and I thought I could build an agent to do them. The first version was a single prompt: an 8,400-word instruction file that the AI read at the start of every session, plus copy-paste prompts for each task. It told the AI to keep long-term strategy apart from the annual filing, check the law again for each tax year, write every fact to a file instead of leaving it in chat, and never edit the source documents.
 
-This repo is the expanded version, built so other people can use it too. The prompt became an agent you can install into a tax folder: a short core plus eight skills. The coding tools block the writes the prompt forbids, so that rule no longer depends on the model obeying, and an eval harness and tests check whether the agent follows the rest. None of my family's data is here. Everything uses a fictional household, Avery and Jordan Sample, in `examples/sample-household/`. The original prompt, with our details taken out, is `docs/operating-manual.md`.
+This repo is the expanded version, built so other people can use it too. The prompt became an agent you can install into a tax folder: a short core plus eight skills. The coding tools block the writes the prompt forbids, so that rule no longer depends on the model obeying, and an eval harness and tests check whether the agent follows the rest. None of my family's data is here. Everything uses a fictional household, Avery and Jordan Sample, in `examples/sample-household/`.
 
 ## Results
 
 Each tool ran 11 scenarios, 3 times each. Every run starts from a fresh copy of the sample household, with no one to answer questions.
 
-| Run | Agent model | Pass | Fail | Inconclusive |
-|---|---|---|---|---|
-| Claude Code 2.1.319 | Opus 5.5 (default) | **24 / 33** | 3 | 6 |
-| Claude Code 2.1.317 | Sonnet 5.5 | **26 / 33** | 4 | 3 |
-| OpenCode 2.1.4 | GPT 6.1 Sol | **26 / 33** | 3 | 4 |
+| Run | Agent model | Passed | Agent mistakes | Correct, but the check missed it | Lock untested |
+|---|---|---|---|---|---|
+| Claude Code 2.1.319 | Opus 5.5 (default) | 24 / 33 | **0** | 3 | 6 |
+| Claude Code 2.1.317 | Sonnet 5.5 | 26 / 33 | 2 | 2 | 3 |
+| OpenCode 2.1.4 | GPT 6.1 Sol | 26 / 33 | 3 | 0 | 4 |
+
+Opus, the default, made no mistakes in these runs: every answer it gave was right. Its 3 failures were right answers in a layout the deterministic checks couldn't read, a home basis in an `Opening / Additions / Closing` table and a deadline on the line under its label. They still count as failures in the score, because the project allowed one round of check fixes and it was already used.
+
+- **Agent mistakes:** OpenCode never concluded that the $3,000 of mortgage points was deductible (3 runs). Sonnet carried 1,500 into 2026 instead of 0, and its engagement charter contradicted its own open approval request.
+- **Lock untested:** asked to edit a protected file, the agent refused, as its rules say, so the lock had nothing to block. These runs are scored inconclusive, not failed. Whenever an agent did try, the lock blocked it.
 
 The Opus run is at commit `61b8936`, the shipped agent. The Sonnet and OpenCode runs are at `4009d6e`, which differs only in one skill's ledger rules and the default Claude model.
-
-What the 23 non-passes were:
-
-- **Agent mistakes (5):** OpenCode never concluded that the $3,000 of mortgage points was deductible (3 runs). Sonnet carried 1,500 into 2026 instead of 0. Sonnet's engagement charter contradicted its own open approval request. Opus made none.
-- **Check limitations (5):** right answers that a deterministic check could not read, all 3 of Opus's failures among them. They stay unfixed because the project allowed one fix round, and it was already used.
-- **Inconclusive (13):** asked to edit a protected file, the agent refused, as its rules say, so the lock had nothing to block.
 
 Every run and its cause is in [`evals/results/SUMMARY.md`](evals/results/SUMMARY.md), next to the rows and transcripts.
 

@@ -89,11 +89,10 @@ Tax_Advisor_Workspace/
 └── 04_LONG_TERM_RECORDS/                       # Agent-created records that survive individual filing years
     ├── CARRYFORWARD_LEDGER.md
     ├── HOME_BASIS_LEDGER.md
-    ├── RENTAL_PROPERTY_BASIS_LEDGER.md
     ├── INVESTMENT_BASIS_LEDGER.md
     ├── RETIREMENT_BASIS_LEDGER.md
-    ├── FOREIGN_ASSET_REGISTER.md
-    └── ANNUAL_ROLLOVER_LOG.md
+    ├── ANNUAL_ROLLOVER_LOG.md
+    └── ...                                     # Add these when they apply: RENTAL_PROPERTY_BASIS_LEDGER.md, FOREIGN_ASSET_REGISTER.md
 ```
 
 ### Tax-year folder rules
@@ -126,7 +125,7 @@ Tax_Advisor_Workspace/
 6. **The listed source categories are recommended, not exhaustive.** The user or agent may create a clear additional folder such as `K1s/`, `Child_Care/`, `Business/`, or `Other/` when that better matches the documents. The agent must recursively inventory the entire `TY_YYYY/` folder and must not assume only the standard folders exist.
 7. **Do not require empty folders.** Create a category only when documents or analysis require it.
 8. **Use the tax year the evidence belongs to.** The fact that filing work occurs in a later calendar year does not change the tax-year folder. A 2025 W-2 belongs in `TY_2025/`, even if the return is prepared in 2026.
-9. **Long-lived original evidence stays with its originating tax year when practical.** For example, a 2017 rental acquisition closing package may live in `TY_2017/Real_Estate/` even if 2017 is not being reviewed for amendment. Long-term ledgers may point back to that evidence.
+9. **Long-lived original evidence stays with its originating tax year when practical.** For example, a prior year's closing package may live in that year's `Real_Estate/` folder even if that year is not being reviewed for amendment. Long-term ledgers may point back to that evidence.
 10. **Do not duplicate source documents unnecessarily.** Reference the canonical file path in inventories, fact registers, and ledgers.
 11. **Do not silently move or rename user source files merely to fit the recommended taxonomy.** If documents are already sensibly organized, preserve them and record their actual paths. Reorganization is optional, not a prerequisite to analysis.
 
@@ -707,10 +706,9 @@ After the relevant returns are finalized, update the applicable permanent ledger
 
 - `CARRYFORWARD_LEDGER.md`
 - `HOME_BASIS_LEDGER.md`
-- `RENTAL_PROPERTY_BASIS_LEDGER.md`
 - `INVESTMENT_BASIS_LEDGER.md`
 - `RETIREMENT_BASIS_LEDGER.md`
-- `FOREIGN_ASSET_REGISTER.md`
+- Add these when they apply: `RENTAL_PROPERTY_BASIS_LEDGER.md`, `FOREIGN_ASSET_REGISTER.md`
 
 A long-term ledger entry must point back to the tax year and source/working evidence that created it.
 
